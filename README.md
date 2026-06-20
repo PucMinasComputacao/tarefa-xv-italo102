@@ -6,8 +6,8 @@
 
 ## Informações do Aluno
 
-- **Nome:** [Seu Nome Aqui]
-- **Matrícula:** [Sua Matrícula Aqui]
+- **Nome:** Italo
+- **Matrícula:** 909414
 
 ---
 
@@ -22,16 +22,16 @@ A entidade principal do projeto é **Filmes**, gerenciada via JSON Server.
 ## Como Executar
 
 1. Instale o JSON Server (caso não tenha):
-   ```bash
+```bash
    npm install -g json-server
-   ```
+```
 
 2. Na raiz do projeto, inicie o servidor:
-   ```bash
+```bash
    json-server --watch db.json --port 3000
-   ```
+```
 
-3. Abra `http://localhost:3000` no navegador ou use a extensão Live Server apontando para a porta 3000.
+3. Abra `http://localhost:3000` no navegador.
 
 > **Usuários de teste:**
 > - Login: `admin` | Senha: `123`
@@ -41,68 +41,29 @@ A entidade principal do projeto é **Filmes**, gerenciada via JSON Server.
 
 ## Funcionalidades Implementadas
 
-### ✅ Integração do Módulo de Login
-- Script `login.js` incluído na `index.html`
-- Ao carregar a home, verifica sessão via `sessionStorage`
-- Se não logado, redireciona para `/modulos/login/index.html`
-- Header exibe "Olá, [nome] | Sair" quando logado, ou link "Entrar"
+### Login
+- Verifica sessão via `sessionStorage`
+- Redireciona para login se não autenticado
+- Header exibe "Olá, [nome] | Sair" quando logado
 
-### ✅ Favoritos por Usuário
-- Botão ❤️ em cada card do catálogo
-- Se não logado: exibe aviso e redireciona para login
-- Se logado: alterna favorito e salva em `localStorage` com chave `favoritos_<idUsuario>`
-- Estado visual persiste ao recarregar a página
-- Cada usuário tem sua própria lista independente
+### Favoritos
+- Botão de favoritar em cada card
+- Exige login para favoritar
+- Salvo em `localStorage` com chave `favoritos_909414`
+- Persiste ao recarregar a página
 
-### ✅ Página "Meus Favoritos"
-- Rota: `/modulos/favoritos/index.html`
+### Página Meus Favoritos
 - Lista apenas os filmes favoritados pelo usuário logado
-- Permite desfavoritar diretamente da lista
-- Estado vazio com CTA para o catálogo
-
----
-
-## Estrutura de Arquivos
-
-```
-projeto/
-├── index.html                    # Home-page (catálogo)
-├── db.json                       # Banco de dados (JSON Server)
-├── assets/
-│   ├── css/
-│   │   └── style.css            # Estilos globais
-│   └── js/
-│       ├── login.js             # Módulo de login (fornecido)
-│       ├── favoritos.js         # Módulo de favoritos
-│       └── app.js               # Lógica da home
-└── modulos/
-    ├── login/
-    │   └── index.html           # Formulário de login
-    └── favoritos/
-        └── index.html           # Página Meus Favoritos
-```
 
 ---
 
 ## Prints
 
-> *(Adicione aqui os prints solicitados)*
-
-### Home com usuário logado ("Olá, …")
+### Home com usuário logado
 ![Home logado](prints/home-logado.png)
 
-### Funcionalidade de favoritos
-![Favoritos no catálogo](prints/favoritos-catalogo.png)
+### Favorito marcado
+![Favoritos](prints/favoritos-catalogo.png)
 
-### Página "Meus Favoritos"
+### Página Meus Favoritos
 ![Página favoritos](prints/pagina-favoritos.png)
-
----
-
-## Decisões Técnicas
-
-| Dado | Armazenamento | Justificativa |
-|---|---|---|
-| Sessão do usuário | `sessionStorage` | Expira ao fechar o navegador (segurança) |
-| Favoritos | `localStorage` | Persiste entre sessões, isolado por usuário via chave composta |
-| Dados de usuários e filmes | JSON Server | Simula API REST para dados dinâmicos |
