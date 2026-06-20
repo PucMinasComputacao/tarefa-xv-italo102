@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Favoritos – CineList</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/login.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <div class="logo">Cine<span>List</span></div>
+      <nav>
+        <a href="/index.html">🎬 Catálogo</a>
+        <a href="/modulos/favoritos/index.html" class="active">❤️ Meus Favoritos</a>
+      </nav>
+      <div id="login-area"></div>
+    </div>
+  </header>
+
+  <main class="section">
+    <h2 class="section-title">❤️ Meus Favoritos</h2>
+    <div id="favoritos-container">
+      <!-- conteúdo gerado por JS -->
+    </div>
+  </main>
+
+  <footer>
+    <p>CineList &copy; 2025 &mdash; Atividade Prática – Login + Personalização</p>
+  </footer>
+
+  <script src="../../assets/js/favoritos.js"></script>
+  <script>
+    // Sobrescreve ícone para usar emoji
+    function atualizarBotaoFavorito(itemId, ativo) {
+      const btn = document.querySelector(`[data-fav-id="${itemId}"]`);
+      if (!btn) return;
+      btn.textContent = ativo ? '❤️' : '🤍';
+      btn.classList.toggle('favoritado', ativo);
+    }
+
+    async function carregarFavoritos() {
+      const usuario = getUsuarioCorrente();
+      const container = document.getElementById('favoritos-container');
+
+      if (!usuario) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔒</div>
+            <h3>Faça login para ver seus favoritos</h3>
+            <p>Entre com sua conta para acessar sua lista personalizada.</p>
+            <a href="/modulos/login/index.html">Entrar agora</a>
+          </div>`;
+        return;
+      }
+
+      const favIds = getFavoritos(usuario.id);
+
+      if (favIds.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🎬</div>
+            <h3>Nenhum favorito ainda</h3>
+            <p>Explore o catálogo e marque os filmes que você ama com ❤️</p>
+            <a href="/index.html">Ver catálogo</a>
+          </div>`;
+        return;
+      }
+
+      try {
+        const resp = await fetch('/filmes');
+        const todos = await resp.json();
+        const favoritos = todos.filter(f => favIds.includes(f.id));
+
+        if (favoritos.length === 0) {
+          container.innerHTML = `<div class="empty-state"><div class="empty-icon">🤍</div><h3>Lista vazia</h3><a href="/index.html">Explorar catálogo</a></div>`;
+          return;
+        }
+
+        container.innerHTML = `<div class="cards-grid">${favoritos.map(criarCardHTML).join('')}</div>`;
+        // Marca todos como favoritados
+        favoritos.forEach(f => {
+          const btn = document.querySelector(`[data-fav-id="${f.id}"]`);
+          if (btn) { btn.textContent = '❤️'; btn.classList.add('favoritado'); }
+        });
+      } catch (e) {
+        container.innerHTML = '<p style="color:var(--muted)">Erro ao carregar filmes. Verifique o JSON Server.</p>';
+      }
+    }
+
+    function criarCardHTML(filme) {
+      return `
+        <article class="card">
+          <div class="card-img-wrap">
+            <img src="${filme.imagem}" alt="Poster de ${filme.titulo}" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/300x450/1e2235/8b90a8?text=Sem+Imagem'" />
+            <div class="card-badge">⭐ ${filme.nota}</div>
+            <button
+              class="btn-fav favoritado"
+              data-fav-id="${filme.id}"
+              onclick="handleFavoritar(${filme.id}); if(!isFavorito(getUsuarioCorrente()?.id, ${filme.id})) this.closest('.card').remove(); verificarLista();"
+              aria-label="Remover dos favoritos"
+              title="Remover dos favoritos"
+            >❤️</button>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">${filme.titulo}</h3>
+            <div class="card-meta"><span>📅 ${filme.ano}</span></div>
+            <span class="card-genero">${filme.genero}</span>
+            <p class="card-desc">${filme.descricao}</p>
+          </div>
+        </article>`;
+    }
+
+    function verificarLista() {
+      const grid = document.querySelector('.cards-grid');
+      if (grid && grid.children.length === 0) {
+        document.getElementById('favoritos-container').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🎬</div>
+            <h3>Nenhum favorito ainda</h3>
+            <p>Explore o catálogo e marque os filmes que você ama com ❤️</p>
+            <a href="/index.html">Ver catálogo</a>
+          </div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initLoginApp().then(() => {
+        carregarFavoritos();
+      });
+    });
+  </script>
+</body>
+</html>

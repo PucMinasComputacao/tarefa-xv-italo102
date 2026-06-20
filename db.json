@@ -1,0 +1,14 @@
+{
+  "usuarios": [
+    { "id": 1, "nome": "Administrador", "login": "admin", "senha": "123", "email": "admin@site.com" },
+    { "id": 2, "nome": "Usuário Padrão", "login": "user", "senha": "123", "email": "user@site.com" }
+  ],
+  "filmes": [
+    { "id": 1, "titulo": "Inception", "ano": 2010, "genero": "Ficção Científica", "nota": 8.8, "imagem": "https://image.tmdb.org/t/p/w300/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg", "descricao": "Um ladrão especialista em invadir sonhos recebe a missão impossível de plantar uma ideia na mente de um empresário." },
+    { "id": 2, "titulo": "The Dark Knight", "ano": 2008, "genero": "Ação", "nota": 9.0, "imagem": "https://image.tmdb.org/t/p/w300/qJ2tW6WMUDux911r6m7haRef0WH.jpg", "descricao": "Batman enfrenta o Coringa, um criminoso que semeia o caos em Gotham City." },
+    { "id": 3, "titulo": "Interstellar", "ano": 2014, "genero": "Ficção Científica", "nota": 8.6, "imagem": "https://image.tmdb.org/t/p/w300/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", "descricao": "Um grupo de exploradores viaja por um buraco de minhoca no espaço em busca de um novo lar para a humanidade." },
+    { "id": 4, "titulo": "Pulp Fiction", "ano": 1994, "genero": "Crime", "nota": 8.9, "imagem": "https://image.tmdb.org/t/p/w300/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg", "descricao": "As histórias de criminosos, gangsters e personagens excêntricos se entrelaçam no submundo de Los Angeles." },
+    { "id": 5, "titulo": "The Matrix", "ano": 1999, "genero": "Ficção Científica", "nota": 8.7, "imagem": "https://image.tmdb.org/t/p/w300/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", "descricao": "Um programador descobre que a realidade é uma simulação criada por máquinas e se junta à resistência." },
+    { "id": 6, "titulo": "Forrest Gump", "ano": 1994, "genero": "Drama", "nota": 8.8, "imagem": "https://image.tmdb.org/t/p/w300/saHP97rTPS5eLmrLQEcANmKrsFl.jpg", "descricao": "A vida extraordinária de um homem simples que, sem querer, se envolveu nos maiores eventos da história americana." }
+  ]
+}

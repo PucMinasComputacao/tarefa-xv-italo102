@@ -1,26 +1,108 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/_PLVIDG8)
-Trabalho Prático - Semana 15
+# CineList – Catálogo de Filmes com Favoritos
 
+**Atividade Prática – Login + Personalização**
 
-Personalização do site com Integração de Login de Usuário
-Nesta atividade, vamos integrar ao projeto o módulo de login, cujo código já é fornecido com o repositório compartilhado para a atividade. A partir dessa integração, vamos implementar uma funcionalidade adicional de personalização para marcação e exibição de itens favoritos.
+---
 
-A seguir, apresentamos mais detalhes sobre o módulo de login, seu funcionamento e como você pode integrar novas funcionalidades no seu projeto.
+## Informações do Aluno
 
-Módulo de Login
-O módulo de login de usuário, fornecido no repositório da atividade, inclui funcionalidades como o formulário de registro de usuários e o processo de validação de login e senha.
+- **Nome:** [Seu Nome Aqui]
+- **Matrícula:** [Sua Matrícula Aqui]
 
-Para utilizar o módulo de login, basta incluir o script de login na sua home-page (index.html), colocando a seguinte tag dentro do elemento HEAD:
+---
 
-<script src="./assets/js/login.js"><script>
-Os dados de usuários são carregados a partir do JSON Server quando o script de login inicializa, usando fetch('/usuarios') dentro da função initLoginApp() localizada no arquivo login.js. Inicialmente o banco de dados é configurado com dois usuários:
+## Descrição do Projeto
 
-Login: admin | Senha: 123
-Login: user | Senha: 123
-A dinâmica de funcionamento do módulo de login é a seguinte:
+Aplicação web de catálogo de filmes com sistema de login integrado e funcionalidade de favoritos personalizada por usuário.
 
-Ao carregar a Home-page, o script verifica se o usuário já efetuou login. Em caso negativo, o navegador é direcionado para o formulário de validação de login e senha (/modulos/login/index.html). 
-Quando o usuário informa login e senha, a função loginUser(login, senha) procura o usuário nos dados e valida a senha. Se a senha estiver correta, o script monta o objeto usuarioCorrente,  salva no sessionStorage e direciona o Navegador para a Home-Page (index.html). O objeto usuarioCorrente tem os seguintes atributos: id, nome, login, senha e email.
-Uma vez carregada a home-page com o usuário validado, pode-se personalizar a apresentação para exibir os dados do usuário logado via dados mantidos no objeto usuarioCorrente.
-Para fazer logoff, a função logoutUser() apaga os dados do objeto usuarioCorrente no sessionStorage, redirecionando o Navegador para o formulário de validação de login e senha.
-💡 Você pode alterar a dinâmica básica utilizando as funções disponíveis e documentadas no arquivo login.js.
+A entidade principal do projeto é **Filmes**, gerenciada via JSON Server.
+
+---
+
+## Como Executar
+
+1. Instale o JSON Server (caso não tenha):
+   ```bash
+   npm install -g json-server
+   ```
+
+2. Na raiz do projeto, inicie o servidor:
+   ```bash
+   json-server --watch db.json --port 3000
+   ```
+
+3. Abra `http://localhost:3000` no navegador ou use a extensão Live Server apontando para a porta 3000.
+
+> **Usuários de teste:**
+> - Login: `admin` | Senha: `123`
+> - Login: `user` | Senha: `123`
+
+---
+
+## Funcionalidades Implementadas
+
+### ✅ Integração do Módulo de Login
+- Script `login.js` incluído na `index.html`
+- Ao carregar a home, verifica sessão via `sessionStorage`
+- Se não logado, redireciona para `/modulos/login/index.html`
+- Header exibe "Olá, [nome] | Sair" quando logado, ou link "Entrar"
+
+### ✅ Favoritos por Usuário
+- Botão ❤️ em cada card do catálogo
+- Se não logado: exibe aviso e redireciona para login
+- Se logado: alterna favorito e salva em `localStorage` com chave `favoritos_<idUsuario>`
+- Estado visual persiste ao recarregar a página
+- Cada usuário tem sua própria lista independente
+
+### ✅ Página "Meus Favoritos"
+- Rota: `/modulos/favoritos/index.html`
+- Lista apenas os filmes favoritados pelo usuário logado
+- Permite desfavoritar diretamente da lista
+- Estado vazio com CTA para o catálogo
+
+---
+
+## Estrutura de Arquivos
+
+```
+projeto/
+├── index.html                    # Home-page (catálogo)
+├── db.json                       # Banco de dados (JSON Server)
+├── assets/
+│   ├── css/
+│   │   └── style.css            # Estilos globais
+│   └── js/
+│       ├── login.js             # Módulo de login (fornecido)
+│       ├── favoritos.js         # Módulo de favoritos
+│       └── app.js               # Lógica da home
+└── modulos/
+    ├── login/
+    │   └── index.html           # Formulário de login
+    └── favoritos/
+        └── index.html           # Página Meus Favoritos
+```
+
+---
+
+## Prints
+
+> *(Adicione aqui os prints solicitados)*
+
+### Home com usuário logado ("Olá, …")
+![Home logado](prints/home-logado.png)
+
+### Funcionalidade de favoritos
+![Favoritos no catálogo](prints/favoritos-catalogo.png)
+
+### Página "Meus Favoritos"
+![Página favoritos](prints/pagina-favoritos.png)
+
+---
+
+## Decisões Técnicas
+
+| Dado | Armazenamento | Justificativa |
+|---|---|---|
+| Sessão do usuário | `sessionStorage` | Expira ao fechar o navegador (segurança) |
+| Favoritos | `localStorage` | Persiste entre sessões, isolado por usuário via chave composta |
+| Dados de usuários e filmes | JSON Server | Simula API REST para dados dinâmicos |

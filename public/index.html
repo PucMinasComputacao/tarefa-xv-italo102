@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineList – Catálogo de Filmes</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <script src="./assets/js/login.js"></script>
 </head>
 <body>
-    
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <div class="logo">Cine<span>List</span></div>
+      <nav>
+        <a href="./index.html" class="active">🎬 Catálogo</a>
+        <a href="./modulos/favoritos/index.html">❤️ Meus Favoritos</a>
+      </nav>
+      <div id="login-area">
+        <!-- preenchido pelo login.js -->
+        <a href="./modulos/login/index.html" class="login-link">Entrar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Seu catálogo<br><span>pessoal de filmes</span></h1>
+    <p>Descubra, salve favoritos e organize os filmes que você ama.</p>
+  </section>
+
+  <!-- LISTA DE FILMES -->
+  <main class="section">
+    <h2 class="section-title">🎥 Catálogo</h2>
+    <div class="cards-grid" id="filmes-container">
+      <!-- cards gerados por app.js -->
+    </div>
+  </main>
+
+  <footer>
+    <p>CineList &copy; 2025 &mdash; Atividade Prática – Login + Personalização</p>
+  </footer>
+
+  <script src="./assets/js/favoritos.js"></script>
+  <script src="./assets/js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar – CineList</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <div class="login-logo">Cine<span>List</span></div>
+    <p class="login-subtitle">Entre para acessar seus favoritos</p>
+
+    <div class="login-error" id="login-error">
+      Login ou senha incorretos. Tente novamente.
+    </div>
+
+    <div class="form-group">
+      <label for="input-login">Login</label>
+      <input type="text" id="input-login" placeholder="ex: admin" autocomplete="username" />
+    </div>
+
+    <div class="form-group">
+      <label for="input-senha">Senha</label>
+      <input type="password" id="input-senha" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+
+    <button class="btn-login" id="btn-entrar">Entrar</button>
+  </div>
+
+  <script>
+    // Carrega usuários e inicializa login
+    let usuariosDB = [];
+
+    async function carregarUsuarios() {
+      try {
+        const resp = await fetch('/usuarios');
+        usuariosDB = await resp.json();
+      } catch (e) {
+        console.error('JSON Server não encontrado:', e);
+      }
+    }
+
+    function getUsuarioCorrente() {
+      const d = sessionStorage.getItem('usuarioCorrente');
+      return d ? JSON.parse(d) : null;
+    }
+
+    // Se já logado, vai direto pra home
+    if (getUsuarioCorrente()) {
+      window.location.href = '/index.html';
+    }
+
+    function tentarLogin() {
+      const login = document.getElementById('input-login').value.trim();
+      const senha = document.getElementById('input-senha').value;
+      const erro = document.getElementById('login-error');
+
+      if (!login || !senha) {
+        erro.textContent = 'Preencha login e senha.';
+        erro.classList.add('visible');
+        return;
+      }
+
+      const usuario = usuariosDB.find(u => u.login === login && u.senha === senha);
+
+      if (!usuario) {
+        erro.textContent = 'Login ou senha incorretos. Tente novamente.';
+        erro.classList.add('visible');
+        document.getElementById('input-senha').value = '';
+        document.getElementById('input-senha').focus();
+        return;
+      }
+
+      erro.classList.remove('visible');
+
+      const usuarioCorrente = {
+        id: usuario.id,
+        nome: usuario.nome,
+        login: usuario.login,
+        senha: usuario.senha,
+        email: usuario.email
+      };
+
+      sessionStorage.setItem('usuarioCorrente', JSON.stringify(usuarioCorrente));
+      window.location.href = '/index.html';
+    }
+
+    document.getElementById('btn-entrar').addEventListener('click', tentarLogin);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') tentarLogin();
+    });
+
+    carregarUsuarios();
+  </script>
+</body>
+</html>
